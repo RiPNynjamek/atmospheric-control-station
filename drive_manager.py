@@ -16,16 +16,24 @@ class Drive:
                 creds.refresh(Request())
                 with open('token.json', 'w') as token:
                     token.write(creds.to_json())
-                    
 
-
-        SCOPES = ["https://wwww.googleapis.com/auth/drive.file"]
-        flow = InstalledAppFlow.from_clients_secrets_file("credentials.json", SCOPES)
-        creds = flow.run_local_server(port=0)
+            # If no valid credentials are available (either expired and can't refresh or never obtained)
+            if not creds or not creds.valid:
+                if creds and creds.expired and creds.refresh_token:
+                    creds.refresh(Request())
+                else:
+                    # Re-authenticate and get new refresh token
+                    flow = InstalledAppFlow.from_client_secrets_file('credentials.json', ['https://www.googleapis.com/auth/drive.file'])
+                    creds = flow.run_local_server(port=0)
+                    # Save credentials for future use
+                    with open('token.json', 'w') as token:
+                        token.write(creds.to_json())
+        else:
+            SCOPES = ["https://wwww.googleapis.com/auth/drive.file"]
+            flow = InstalledAppFlow.from_clients_secrets_file("credentials.json", SCOPES)
+            creds = flow.run_local_server(port=0)
         return build('drive', 'v3', credentials=creds)
     
-    
-
     def upload(service, file_path):
         file_metadata = {
             'name': file_path.split('/')[-1],
