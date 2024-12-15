@@ -41,4 +41,5 @@ class Drive:
             }
         media = MediaFileUpload(file_path, mimetype='image/png')
         uploaded_file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-        print(f'file uploaded{uploaded_file.get('id')}')
+        file_id = uploaded_file.get('id')
+        print(f'File uploaded: {file_id}')
