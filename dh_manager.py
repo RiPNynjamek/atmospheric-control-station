@@ -6,11 +6,10 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 class dh_manager: # no need for a class in my usecase but I created one anyways because i'm a madman
-    def __init__(self,dht_device): 
-        self.dht_device= dht_device
+    def __init__(self): 
+        self.dht_device= adafruit_dht.DHT22(board.D4) # D4 = pin 4 in BCM mode 
         self.fan_port = 18
         self.humid_port = 6
-        dht_device = adafruit_dht.DHT22(board.D4) # D4 = pin 4 in BCM mode 
         self.fan_on = False
         self.humidifier_on = False
 
