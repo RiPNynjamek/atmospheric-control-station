@@ -26,7 +26,6 @@ def main():
 
     end_time = datetime.now() + timedelta(minutes=5)
     logging.info(f"Program will run until {end_time}")
-     # while true loop because why the fuck not
     try:
         while datetime.now() < end_time:
             manage(dh, config)

@@ -1,8 +1,9 @@
 import adafruit_dht
 import board
 import RPi.GPIO as GPIO
-import time 
 import logging
+from datetime import datetime
+
 logging.basicConfig(level=logging.INFO)
 
 class dh_manager: # no need for a class in my usecase but I created one anyways because i'm a madman
@@ -38,7 +39,8 @@ class dh_manager: # no need for a class in my usecase but I created one anyways 
         if temperature is None or humidity is None:
             logging.info("Invalid readout, waiting for a valid one") # the sensor sometimes fails to retrieve a value so needed a safeguard
             return None, None
-        logging.info("Temp:{:.1f} C | Humidity:{}%".format(temperature,humidity))
+        timestamp = datetime.now().strftime('%H:%M:%S')
+        logging.info("{timestamp} : Temp:{:.1f} C | Humidity:{}%".format(temperature,humidity))
 
         # Handle high temperature
         if temperature > config.get('max_temperature'):
