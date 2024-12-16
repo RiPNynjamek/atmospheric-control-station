@@ -7,6 +7,16 @@ from dh_manager import dh_manager
 from drive_manager import Drive
 import logging
 
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("app.log"),     # Logs to file
+        logging.StreamHandler()            # Logs to console
+    ]
+)
+
 def main():
     plot = Plot()
     plot.create_csv()
