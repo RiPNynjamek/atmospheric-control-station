@@ -3,7 +3,7 @@ import time
 import csv
 from datetime import datetime, timedelta
 from plot import Plot
-from dh_manager import dh_manager
+# from dh_manager import dh_manager
 from drive_manager import Drive
 import logging
 
@@ -20,7 +20,7 @@ logging.basicConfig(
 def main():
     plot = Plot()
     plot.create_csv()
-    dh = dh_manager()
+    dh = dh_manager.dh_manager()
     dh.initialize()
     config = dh.read_config()
 
