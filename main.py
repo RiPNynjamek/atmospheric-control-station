@@ -39,10 +39,6 @@ def main():
             plotting(plot)
             logging.info("Finished testing and cleaned up resources.")
 
-    plotting(plot)
-    dh.cleanup()
-    print('Finished 10 minutes run.')
-
 def manage(dh, config):
     csv_file = 'temperature_humidity_data.csv'
     try:
