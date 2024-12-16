@@ -20,7 +20,7 @@ logging.basicConfig(
 def main():
     plot = Plot()
     plot.create_csv()
-    dh = dh_manager.dh_manager()
+    dh = dh_manager()
     dh.initialize()
     config = dh.read_config()
 
@@ -44,6 +44,11 @@ def manage(dh, config):
     try:
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         temperature, humidity = dh.manage_climate(config)
+
+        # stepping out if readouts invalid
+        if temperature is None or humidity is None:
+            return
+        
         with open(csv_file, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([timestamp, temperature, humidity])

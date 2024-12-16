@@ -6,7 +6,7 @@ from datetime import datetime
 
 logging.basicConfig(level=logging.INFO)
 
-class dh_manager: # no need for a class in my usecase but I created one anyways because i'm a madman
+class dh_manager:
     def __init__(self): 
         self.dht_device= adafruit_dht.DHT22(board.D4) # D4 = pin 4 in BCM mode 
         self.fan_port = 18
@@ -26,9 +26,6 @@ class dh_manager: # no need for a class in my usecase but I created one anyways 
         return temperature, humidity
     
     def initialize(self):
-        # dh = dh_manager(dht_device)
-        # time.sleep(5) # need to wait for sensor initialization
-
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.fan_port, GPIO.OUT)
         GPIO.setup(self.humid_port, GPIO.OUT)
@@ -40,7 +37,7 @@ class dh_manager: # no need for a class in my usecase but I created one anyways 
             logging.info("Invalid readout, waiting for a valid one") # the sensor sometimes fails to retrieve a value so needed a safeguard
             return None, None
         timestamp = datetime.now().strftime('%H:%M:%S')
-        logging.info("{timestamp} : Temp:{:.1f} C | Humidity:{}%".format(temperature,humidity))
+        logging.info(f"{timestamp} :Temp:{temperature:.1f} C | Humidity:{humidity}%")
 
         # Handle high temperature
         if temperature > config.get('max_temperature'):
@@ -71,9 +68,6 @@ class dh_manager: # no need for a class in my usecase but I created one anyways 
         self.control_humidifier(False)
         logging.info(f"Climate is stable.")
         return temperature, humidity
-    
-        with open('readings.txt', 'w') as f:
-            f.write('Temp:{:.1f} C          Humidity:{}%'.format(temperature,humidity))
 
     def control_fan(self, state):
         if getattr(self, 'fan_on', None) != state:  # Check current state
