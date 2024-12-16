@@ -33,9 +33,9 @@ class Plot:
         ax1.set_title('Temperature and Humidity Over Time')
         ax1.set_xlabel('Time')
         ax1.set_ylabel('Temperature (°C)', color='tab:red')
-        ax1.set_ylim(10, 50)  # Set the temperature axis range
+        ax1.set_ylim(10, 40)  # Set the temperature axis range
         ax1.tick_params(axis='y', labelcolor='tab:red')
-        ax1.grid(True)
+        ax1.grid(False)
 
         # Create a second y-axis for Humidity
         ax2 = ax1.twinx()

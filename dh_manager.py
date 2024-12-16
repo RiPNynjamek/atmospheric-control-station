@@ -77,7 +77,7 @@ class dh_manager:
 
     def control_humidifier(self, state):
         if getattr(self, 'humidifier_on', None) != state:  # Check current state
-            GPIO.output(self.humid_port, GPIO.HIGH if state else GPIO.LOW)
+            GPIO.output(self.humid_port, GPIO.LOW if state else GPIO.HIGH)
             self.humidifier_on = state  # Store current state
             logging.info('Humidifier started.' if state else 'Humidifier stopped.')
 
