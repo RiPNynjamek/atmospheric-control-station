@@ -29,7 +29,8 @@ class dh_manager:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.fan_port, GPIO.OUT)
         GPIO.setup(self.humid_port, GPIO.OUT)
-    
+        GPIO.output(self.humid_port, GPIO.HIGH)
+        GPIO.output(self.fan_port, GPIO.HIGH)
 
     def manage_climate(self, config):
         temperature, humidity = self.get_values()
@@ -71,7 +72,7 @@ class dh_manager:
 
     def control_fan(self, state):
         if getattr(self, 'fan_on', None) != state:  # Check current state
-            GPIO.output(self.fan_port, GPIO.HIGH if state else GPIO.LOW)
+            GPIO.output(self.fan_port, GPIO.LOW if state else GPIO.HIGH)
             self.fan_on = state  # Store current state
             logging.info('Fan started.' if state else 'Fan stopped.')
 
