@@ -1,4 +1,4 @@
-import dh_manager
+from dh_manager import dh_manager
 import time
 import csv
 from datetime import datetime, timedelta
