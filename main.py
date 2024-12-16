@@ -25,7 +25,7 @@ def main():
     config = dh.read_config()
 
     end_time = datetime.now() + timedelta(hours=1)
-
+    logging.info(f"Program will run until {end_time}")
     while datetime.now() < end_time: # while true loop because why the fuck not
         try:
             manage(dh, config)
@@ -68,4 +68,5 @@ if __name__ == "__main__":
         level=logging.DEBUG,
         format='%(asctime)s - %(levelname)s - %(message)s'
     )
+    logging.info('Process starting.')
     main()

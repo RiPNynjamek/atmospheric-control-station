@@ -8,7 +8,7 @@ import os
 
 class Drive:
     
-    def authenticate():
+    def authenticate(self):
         if os.path.exists('token.json'):
             creds = Credentials.from_authorized_user_file('token.json')
 
@@ -30,7 +30,7 @@ class Drive:
                         token.write(creds.to_json())
         else:
             SCOPES = ["https://wwww.googleapis.com/auth/drive.file"]
-            flow = InstalledAppFlow.from_clients_secrets_file("credentials.json", SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
         return build('drive', 'v3', credentials=creds)
     
