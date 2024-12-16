@@ -48,7 +48,7 @@ class Drive:
         #     creds = flow.run_local_server(port=0)
         # return build('drive', 'v3', credentials=creds)
     
-    def upload(service, file_path):
+    def upload(self, service, file_path):
         file_metadata = {
             'name': file_path.split('/')[-1],
             'parents': ['1D3Z1vl_YIPw5BSb_51wpl5Sk5msk0xs6']

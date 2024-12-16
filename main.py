@@ -24,20 +24,21 @@ def main():
     dh.initialize()
     config = dh.read_config()
 
-    end_time = datetime.now() + timedelta(hours=1)
+    end_time = datetime.now() + timedelta(minutes=5)
     logging.info(f"Program will run until {end_time}")
-    while datetime.now() < end_time: # while true loop because why the fuck not
-        try:
+     # while true loop because why the fuck not
+    try:
+        while datetime.now() < end_time:
             manage(dh, config)
             time.sleep(30) # 30s between 2 readings in production
-        except KeyboardInterrupt:
-            logging.warning("Program interrupted by user.")
-        except Exception as err:
-            logging.error(f'An error occured : {err}')
-        finally:
-            dh.cleanup()  # Always clean up GPIO
-            plotting(plot)
-            logging.info("Finished testing and cleaned up resources.")
+    except KeyboardInterrupt:
+        logging.warning("Program interrupted by user.")
+    except Exception as err:
+        logging.error(f'An error occured : {err}')
+    finally:
+        dh.cleanup()  # Always clean up GPIO
+        plotting(plot)
+        logging.info("Finished testing and cleaned up resources.")
 
 def manage(dh, config):
     csv_file = 'temperature_humidity_data.csv'
@@ -55,8 +56,8 @@ def plotting(plot):
     print('Generating daily plot....')
     plot_file = plot.generate_plot()
     drive = Drive()
-    drive.authenticate()
-    drive.upload(plot_file)
+    service = drive.authenticate()
+    drive.upload(service, plot_file)
 
 
 if __name__ == "__main__":
