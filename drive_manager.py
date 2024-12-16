@@ -51,7 +51,7 @@ class Drive:
     def upload(self, service, file_path):
         file_metadata = {
             'name': file_path.split('/')[-1],
-            'parents': ['1D3Z1vl_YIPw5BSb_51wpl5Sk5msk0xs6']
+            'parents': ['1D3Z1vI_YIPw5BSb_51wpI5Sk5msk0xs6']
             }
         media = MediaFileUpload(file_path, mimetype='image/png')
         uploaded_file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
