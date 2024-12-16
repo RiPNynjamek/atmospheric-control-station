@@ -14,7 +14,7 @@ def main():
     dh.initialize()
     config = dh.read_config()
 
-    end_time = datetime.now() + timedelta(minutes=10)
+    end_time = datetime.now() + timedelta(hours=1)
 
     while datetime.now() < end_time: # while true loop because why the fuck not
         try:
@@ -51,3 +51,11 @@ def plotting(plot):
     drive = Drive()
     drive.authenticate()
     drive.upload(plot_file)
+
+
+if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
+    main()
