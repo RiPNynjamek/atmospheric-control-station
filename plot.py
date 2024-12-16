@@ -3,6 +3,7 @@ from datetime import datetime
 import csv
 import pandas as pd
 import os 
+from datetime import datetime
 
 class Plot:
     csv_file = 'temperature_humidity_data.csv'
@@ -48,7 +49,8 @@ class Plot:
 
         # Adjust layout and save the plot
         plt.tight_layout()
-        plot_filename = 'daily_plot.png'
+        timestamp = datetime.now().strftime('%Y-%m-%d')
+        plot_filename = f'{timestamp}_plot.png'
         plt.savefig(plot_filename)  # Save the plot as an image
         return plot_filename
     
