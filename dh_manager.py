@@ -10,7 +10,7 @@ class dh_manager:
     def __init__(self): 
         self.dht_device= adafruit_dht.DHT22(board.D4) # D4 = pin 4 in BCM mode 
         self.fan_port = 18
-        self.humid_port = 6
+        self.humid_port = 17
         self.fan_on = False
         self.humidifier_on = False
 
@@ -34,6 +34,11 @@ class dh_manager:
 
     def manage_climate(self, config):
         temperature, humidity = self.get_values()
+        
+        # TESTING PURPOSES
+        # humidity = int(input('Enter humidity: '))
+        # temperature = int(input('Enter temperature: '))
+
         if temperature is None or humidity is None:
             logging.info("Invalid readout, waiting for a valid one") # the sensor sometimes fails to retrieve a value so needed a safeguard
             return None, None
