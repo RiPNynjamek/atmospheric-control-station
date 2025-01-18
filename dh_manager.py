@@ -21,7 +21,7 @@ class dh_manager:
             temperature = self.dht_device.temperature
             humidity = self.dht_device.humidity
         except Exception as err:
-            logging.ERROR(f'Unexpected error: {err}')
+            logging.error(f'Failed to retrieve sensor readings. Error: {err}')
             raise err
         return temperature, humidity
     
@@ -40,7 +40,6 @@ class dh_manager:
         # temperature = int(input('Enter temperature: '))
 
         if temperature is None or humidity is None:
-            logging.info("Invalid readout, waiting for a valid one") # the sensor sometimes fails to retrieve a value so needed a safeguard
             return None, None
         timestamp = datetime.now().strftime('%H:%M:%S')
         logging.info(f"{timestamp} :Temp:{temperature:.1f} C | Humidity:{humidity}%")
