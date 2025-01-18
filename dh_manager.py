@@ -41,15 +41,14 @@ class dh_manager:
 
         if temperature is None or humidity is None:
             return None, None
-        timestamp = datetime.now().strftime('%H:%M:%S')
-        logging.info(f"{timestamp} :Temp:{temperature:.1f} C | Humidity:{humidity}%")
+        logging.info(f"temperature :{temperature:.1f} C | humidity:{humidity}%")
 
         # Handle high temperature
         if temperature > config.get('max_temperature'):
             logging.info('Temperature above maximum : {}°'.format(temperature))
             self.control_fan(True) #fan turned on to cool down the air
             self.control_humidifier(False) #turn off humidifier since the fan will dry the air anyways, waste of water
-            return temperature, humidity
+            return temperature, humidity, self.fan_on, self.humidifier_on
         else:
             if humidity >= config.get('max_humidity'):
                 logging.info('Humidity above normal : {}%'.format(humidity))
@@ -57,7 +56,7 @@ class dh_manager:
                 
                 if temperature > config.get('ideal_temperature'):
                     self.control_fan(True) #fan turned on to cool down the air
-                return temperature, humidity
+                return temperature, humidity, self.fan_on, self.humidifier_on
             
             if humidity <= config.get('min_humidity'):
                 logging.info('Humidity below normal : {}%'.format(humidity))
@@ -66,13 +65,13 @@ class dh_manager:
                 if(temperature < config.get('max_temperature')):
                     self.control_fan(False) #disable the fan if the temperature is fine to let relative humidity ramp up
 
-                return temperature, humidity
+                return temperature, humidity, self.fan_on, self.humidifier_on
 
         # Default state: fan and humidifier off if no conditions met
         self.control_fan(False)
         self.control_humidifier(False)
         logging.info(f"Climate is stable.")
-        return temperature, humidity
+        return temperature, humidity, self.fan_on, self.humidifier_on
 
     def control_fan(self, state):
         if getattr(self, 'fan_on', None) != state:  # Check current state

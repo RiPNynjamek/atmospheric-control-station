@@ -44,6 +44,20 @@ class Plot:
         ax2.set_ylim(0, 100)  # Set the humidity axis range
         ax2.tick_params(axis='y', labelcolor='tab:blue')
 
+        # For Fan On True/False use different markers
+        for idx, row in data.iterrows():
+            if row['Fan On'] == True:
+                ax1.scatter(row['Timestamp'], row['Temperature (C)'], color='red', marker='o', s=20)
+            else:
+                ax1.scatter(row['Timestamp'], row['Temperature (C)'], color='red', marker='x', s=100)
+
+        # For Humidifier On True/False use different markers
+        for idx, row in data.iterrows():
+            if row['Humidifier On'] == True:
+                ax2.scatter(row['Timestamp'], row['Humidity (%)'], color='blue', marker='o', s=20)
+            else:
+                ax2.scatter(row['Timestamp'], row['Humidity (%)'], color='blue', marker='x', s=100)
+        
         # Rotate x-ticks for better visibility
         plt.xticks(rotation=45)
 
@@ -59,4 +73,4 @@ class Plot:
         with open(self.csv_file, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow([timestamp, temperature, humidity])
-        print(f"Data saved at {timestamp}: Temp={temperature}°C, Humidity={humidity}%")
+        # logging.info(f"Data saved: Temp={temperature}°C, Humidity={humidity}%")
