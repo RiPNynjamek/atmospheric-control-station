@@ -40,15 +40,15 @@ def manage(dh, config):
     csv_file = 'temperature_humidity_data.csv'
     try:
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        temperature, humidity = dh.manage_climate(config)
+        temperature, humidity, fan_on, humidifier_on = dh.manage_climate(config)
 
         while temperature is None or humidity is None:
             time.sleep(1) # hardware limitation 1s before reading again
-            temperature, humidity = dh.manage_climate(config)
+            temperature, humidity, fan_on, humidifier_on = dh.manage_climate(config)
         
         with open(csv_file, mode='a', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow([timestamp, temperature, humidity])
+            writer.writerow([timestamp, temperature, humidity, fan_on, humidifier_on])
 
     except Exception as err:
         logging.error(f"Error in manage function: {err}")

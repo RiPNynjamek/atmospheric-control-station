@@ -14,12 +14,12 @@ class Plot:
             # Open the CSV file in write mode, erasing its contents except the header
             with open(self.csv_file, mode='w', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow(['Timestamp', 'Temperature (C)', 'Humidity (%)'])  # Write the header again
+                writer.writerow(['Timestamp', 'Temperature (C)', 'Humidity (%)', 'Fan On', 'Humidifier On'])  # Write the header again
         else:
             # Create the CSV file and write the header if it doesn't exist
             with open(self.csv_file, mode='x', newline='') as file:
                 writer = csv.writer(file)
-                writer.writerow(['Timestamp', 'Temperature (C)', 'Humidity (%)'])
+                writer.writerow(['Timestamp', 'Temperature (C)', 'Humidity (%)', 'Fan On', 'Humidifier On'])
 
     
     def generate_plot(self):
