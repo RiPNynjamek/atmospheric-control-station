@@ -6,12 +6,12 @@ from plot import Plot
 from drive_manager import Drive
 import logging
 
-# Configure logging
+# Configuration de base du logging
 logging.basicConfig(
-    level=logging.DEBUG,
-    filename='app.log',
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    datefmt='%d-%m-%Y %H:%M:%S',
+    filename='app.log',          # Nom du fichier de log
+    level=logging.DEBUG,         # Niveau minimal de log (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
+    datefmt='%Y-%m-%d %H:%M:%S',  # Format de la date
 )
 
 def main():
@@ -25,8 +25,14 @@ def main():
     logging.info(f"Program will run until {end_time}")
     try:
         while datetime.now() < end_time:
-            manage(dh, config)
+            try:
+                manage(dh, config)
+            except Exception as err:
+                logging.error(f"Error in manage function: {err}")
+                time.sleep(2) # 30s between 2 readings to let the climate change
+
             time.sleep(30) # 30s between 2 readings to let the climate change
+
     except KeyboardInterrupt:
         logging.warning("Program interrupted by user.")
     except Exception as err:
@@ -43,7 +49,7 @@ def manage(dh, config):
         temperature, humidity, fan_on, humidifier_on = dh.manage_climate(config)
 
         while temperature is None or humidity is None:
-            time.sleep(1) # hardware limitation 1s before reading again
+            time.sleep(2) # hardware limitation 1s before reading again
             temperature, humidity, fan_on, humidifier_on = dh.manage_climate(config)
         
         with open(csv_file, mode='a', newline='') as file:
@@ -51,7 +57,7 @@ def manage(dh, config):
             writer.writerow([timestamp, temperature, humidity, fan_on, humidifier_on])
 
     except Exception as err:
-        logging.error(f"Error in manage function: {err}")
+        raise err
 
 def plotting(plot):
     logging.info('Generating daily plot....')

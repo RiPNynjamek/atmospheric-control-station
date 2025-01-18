@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 import logging
 from datetime import datetime
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 
 class dh_manager:
     def __init__(self): 
@@ -21,7 +21,6 @@ class dh_manager:
             temperature = self.dht_device.temperature
             humidity = self.dht_device.humidity
         except Exception as err:
-            logging.error(f'Failed to retrieve sensor readings. Error: {err}')
             raise err
         return temperature, humidity
     
