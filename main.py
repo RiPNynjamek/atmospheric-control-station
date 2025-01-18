@@ -21,7 +21,7 @@ def main():
     dh.initialize()
     config = dh.read_config()
 
-    end_time = datetime.now() + timedelta(minutes=120) # 2h test
+    end_time = datetime.now() + timedelta(minutes=90) # 1h30 test
     logging.info(f"Program will run until {end_time}")
     try:
         while datetime.now() < end_time:
@@ -29,9 +29,9 @@ def main():
                 manage(dh, config)
             except Exception as err:
                 logging.error(f"Error in manage function: {err}")
-                time.sleep(2) # 30s between 2 readings to let the climate change
+                time.sleep(2) # hardware limitations: 2s after an error
 
-            time.sleep(30) # 30s between 2 readings to let the climate change
+            time.sleep(5) # 5s between 2 readings to let the climate change
 
     except KeyboardInterrupt:
         logging.warning("Program interrupted by user.")
@@ -39,7 +39,10 @@ def main():
         logging.error(f'An error occured : {err}')
     finally:
         dh.cleanup()  # Always clean up GPIO
-        plotting(plot)
+
+        plot_file = plot.generate_plot()
+        uploadFile(plot_file, 'image/png')
+        uploadFile('app.logs', 'text/plain')
         logging.info("Finished testing and cleaned up resources.")
 
 def manage(dh, config):
@@ -59,12 +62,10 @@ def manage(dh, config):
     except Exception as err:
         raise err
 
-def plotting(plot):
-    logging.info('Generating daily plot....')
-    plot_file = plot.generate_plot()
+def uploadFile(file, mimetype):
     drive = Drive()
     service = drive.authenticate()
-    drive.upload(service, plot_file)
+    drive.upload(service, file, mimetype)
 
 
 if __name__ == "__main__":

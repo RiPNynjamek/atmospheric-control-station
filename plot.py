@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 import os 
 from datetime import datetime
+import logging
 
 class Plot:
     csv_file = 'temperature_humidity_data.csv'
@@ -26,7 +27,7 @@ class Plot:
         data = pd.read_csv(self.csv_file, parse_dates=['Timestamp'])
 
         # Create a figure and axis
-        fig, ax1 = plt.subplots(figsize=(12, 6))
+        fig, ax1 = plt.subplots(figsize=(96, 48))
 
         # Plot Temperature (on the left y-axis)
         ax1.plot(data['Timestamp'], data['Temperature (C)'], label='Temperature (°C)', color='tab:red')
@@ -65,7 +66,7 @@ class Plot:
         plt.tight_layout()
         timestamp = datetime.now().strftime('%Y-%m-%d')
         plot_filename = f'{timestamp}_plot.png'
-        plt.savefig(plot_filename)  # Save the plot as an image
+        plt.savefig(plot_filename, dpi=300)  # Save the plot as an high resolution image
         return plot_filename
     
     def save_data(self, temperature, humidity):

@@ -19,12 +19,12 @@ class Drive:
         # Return the Drive API service instance
         return build('drive', 'v3', credentials=creds)
     
-    def upload(self, service, file_path):
+    def upload(self, service, file_path, mimetype):
         file_metadata = {
             'name': file_path.split('/')[-1],
             'parents': ['1D3Z1vI_YIPw5BSb_51wpI5Sk5msk0xs6']
             }
-        media = MediaFileUpload(file_path, mimetype='image/png')
+        media = MediaFileUpload(file_path, mimetype=mimetype)
         uploaded_file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
         file_id = uploaded_file.get('id')
         print(f'File uploaded: {file_id}')

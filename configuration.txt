@@ -1,6 +1,6 @@
-max_temperature=28
-ideal_temperature=24
+max_temperature=26
+ideal_temperature=23
 min_temp=18
 min_humidity=50
-max_humidity=60
+max_humidity=65
 ideal_humidity=55
