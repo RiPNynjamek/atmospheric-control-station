@@ -40,6 +40,7 @@ def main():
     except Exception as err:
         logging.error(f'An error occured : {err}')
     finally:
+        time.sleep(2) # hardware limitations: 2s after an error
         timestamp = datetime.now().strftime('%Y-%m-%d')
         dh.cleanup()  # Always clean up GPIO
         plot_file = plot.generate_plot()
