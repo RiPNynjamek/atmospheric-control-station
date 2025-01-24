@@ -8,7 +8,6 @@ from datetime import datetime
 
 class dh_manager:
     def __init__(self): 
-        GPIO.cleanup()
         self.dht_device= adafruit_dht.DHT22(board.D4) # D4 = pin 4 in BCM mode 
         self.fan_port = 18
         self.humid_port = 17
@@ -26,12 +25,18 @@ class dh_manager:
         return temperature, humidity
     
     def initialize(self):
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.fan_port, GPIO.OUT)
-        GPIO.setup(self.humid_port, GPIO.OUT)
-        GPIO.output(self.humid_port, GPIO.HIGH)
-        GPIO.output(self.fan_port, GPIO.HIGH)
-
+        try:
+            GPIO.cleanup()
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setup(self.fan_port, GPIO.OUT)
+            GPIO.setup(self.humid_port, GPIO.OUT)
+            GPIO.output(self.humid_port, GPIO.HIGH)
+            GPIO.output(self.fan_port, GPIO.HIGH)
+        except:
+            logging.error(f"Error during initialization: {e}")
+            GPIO.cleanup()
+            raise
+        
     def manage_climate(self, config):
         temperature, humidity = self.get_values()
         
