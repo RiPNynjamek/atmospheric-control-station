@@ -1,37 +1,32 @@
 import unittest
-import RPi.GPIO as GPIO
+import time
 from dh_manager import dh_manager
 
-class TestDhManagerGPIO(unittest.TestCase):
-    def setUp(self):
-        """Set up the dh_manager instance and initialize GPIO."""
-        self.dh = dh_manager()
-        self.dh.fan_port = 18  # Use actual GPIO pins
-        self.dh.humid_port = 6
-        self.dh.initialize()
 
-    def tearDown(self):
-        """Clean up GPIO resources after each test."""
-        GPIO.cleanup()
+"""Set up the dh_manager instance and initialize GPIO."""
+dh = dh_manager()
+# dh.fan_port = 18  # Use actual GPIO pins
+# dh.humid_port = 6
+dh.initialize()
 
-    # def test_control_fan(self):
-    #     while True:
-    #         temperature = int(input('Enter temperature: '))
-    #         """Test turning the fan ON."""
-    #         if(temperature > 25):
-    #             self.dh.control_fan(True)
-    #         else:
-    #             self.dh.control_fan(False)
+try:
+    print("Turning fan ON")
+    dh.control_fan(True)
+    time.sleep(5)
 
-    def test_control_humidifier(self):
-        while True:
-            humidity = int(input('Enter humidity: '))
-            """Test turning the fan ON."""
-            if(humidity > 50):
-                self.dh.control_humidifier(True)
-            else:
-                self.dh.control_humidifier(False)
+    print("Turning fan OFF")
+    dh.control_fan(False)
+    time.sleep(5)
 
+    print("Turning humidifier ON")
+    dh.control_humidifier(True)
+    time.sleep(5)
 
-if __name__ == "__main__":
-    unittest.main()
+    print("Turning humidifier OFF")
+    dh.control_humidifier(False)
+    time.sleep(5)
+
+except KeyboardInterrupt:
+    print("Interrupted by user")    
+finally:
+    dh.cleanup()

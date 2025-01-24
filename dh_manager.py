@@ -3,6 +3,7 @@ import board
 import RPi.GPIO as GPIO
 import logging
 from datetime import datetime
+import time
 
 # logging.basicConfig(level=logging.INFO)
 
@@ -112,7 +113,10 @@ class dh_manager:
         return config
     
     def cleanup(self):
-        GPIO.output(self.humid_port, GPIO.HIGH)
-        GPIO.output(self.fan_port, GPIO.HIGH)
+        self.control_humidifier(False)
+        self.control_fan(False)
+        # GPIO.output(self.humid_port, GPIO.HIGH)
+        time.sleep(2) # hardware limitations: 2s after an error
+        # GPIO.output(self.fan_port, GPIO.HIGH)
         GPIO.cleanup()
         logging.info("GPIO resources cleaned up.")

@@ -10,7 +10,7 @@ import logging
 logging.basicConfig(
     filename='app.log',          # Nom du fichier de log
     filemode='w',
-    level=logging.DEBUG,         # Niveau minimal de log (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    level=logging.INFO,         # Niveau minimal de log (DEBUG, INFO, WARNING, ERROR, CRITICAL)
     format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
     datefmt='%Y-%m-%d %H:%M:%S',  # Format de la date
 )
