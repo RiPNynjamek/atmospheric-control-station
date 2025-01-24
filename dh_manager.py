@@ -32,11 +32,11 @@ class dh_manager:
             GPIO.setup(self.humid_port, GPIO.OUT)
             GPIO.output(self.humid_port, GPIO.HIGH)
             GPIO.output(self.fan_port, GPIO.HIGH)
-        except:
+        except Exception as e:
             logging.error(f"Error during initialization: {e}")
             GPIO.cleanup()
             raise
-        
+
     def manage_climate(self, config):
         temperature, humidity = self.get_values()
         
@@ -59,16 +59,16 @@ class dh_manager:
                 logging.info('Humidity above normal : {}%'.format(humidity))
                 self.control_humidifier(False) # turn off the humidifier
                 
-                if temperature > config.get('ideal_temperature'):
-                    self.control_fan(True) #fan turned on to cool down the air
+                # if temperature > config.get('max_temperature'):
+                #     self.control_fan(True) #fan turned on to cool down the air
                 return temperature, humidity, self.fan_on, self.humidifier_on
             
             if humidity <= config.get('min_humidity'):
                 logging.info('Humidity below normal : {}%'.format(humidity))
                 self.control_humidifier(True) # turn on the humidifier
 
-                if(temperature < config.get('max_temperature')):
-                    self.control_fan(False) #disable the fan if the temperature is fine to let relative humidity ramp up
+                # if(temperature < config.get('max_temperature')):
+                #     self.control_fan(False) #disable the fan if the temperature is fine to let relative humidity ramp up
 
                 return temperature, humidity, self.fan_on, self.humidifier_on
 
