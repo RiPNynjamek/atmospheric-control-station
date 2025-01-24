@@ -25,6 +25,7 @@ class dh_manager:
         return temperature, humidity
     
     def initialize(self):
+        GPIO.cleanup()
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.fan_port, GPIO.OUT)
         GPIO.setup(self.humid_port, GPIO.OUT)
@@ -106,5 +107,7 @@ class dh_manager:
         return config
     
     def cleanup(self):
+        GPIO.output(self.humid_port, GPIO.HIGH)
+        GPIO.output(self.fan_port, GPIO.HIGH)
         GPIO.cleanup()
         logging.info("GPIO resources cleaned up.")
