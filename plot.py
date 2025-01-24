@@ -25,12 +25,13 @@ class Plot:
     
     def generate_plot(self):
         data = pd.read_csv(self.csv_file, parse_dates=['Timestamp'])
+        data['Time'] = data['Timestamp'].dt.strftime('%H:%M')
 
         # Create a figure and axis
-        fig, ax1 = plt.subplots(figsize=(96, 48))
+        fig, ax1 = plt.subplots(figsize=(10, 5))
 
         # Plot Temperature (on the left y-axis)
-        ax1.plot(data['Timestamp'], data['Temperature (C)'], label='Temperature (°C)', color='tab:red')
+        ax1.plot(data['Timestamp'], data['Temperature (C)'], label='Temperature (°C)', color='tab:red', linewidth=0.5)
         ax1.set_title('Temperature and Humidity Over Time')
         ax1.set_xlabel('Time')
         ax1.set_ylabel('Temperature (°C)', color='tab:red')
@@ -40,24 +41,24 @@ class Plot:
 
         # Create a second y-axis for Humidity
         ax2 = ax1.twinx()
-        ax2.plot(data['Timestamp'], data['Humidity (%)'], label='Humidity (%)', color='tab:blue')
+        ax2.plot(data['Timestamp'], data['Humidity (%)'], label='Humidity (%)', color='tab:blue', linewidth=0.5)
         ax2.set_ylabel('Humidity (%)', color='tab:blue')
         ax2.set_ylim(0, 100)  # Set the humidity axis range
         ax2.tick_params(axis='y', labelcolor='tab:blue')
 
         # For Fan On True/False use different markers
-        for idx, row in data.iterrows():
-            if row['Fan On'] == True:
-                ax1.scatter(row['Timestamp'], row['Temperature (C)'], color='red', marker='o', s=20)
-            else:
-                ax1.scatter(row['Timestamp'], row['Temperature (C)'], color='red', marker='x', s=100)
+        # for idx, row in data.iterrows():
+        #     if row['Fan On'] == True:
+        #         ax1.scatter(row['Timestamp'], row['Temperature (C)'], color='red', marker='o', s=5)
+        #     else:
+        #         ax1.scatter(row['Timestamp'], row['Temperature (C)'], color='red', marker='x', s=10)
 
         # For Humidifier On True/False use different markers
         for idx, row in data.iterrows():
             if row['Humidifier On'] == True:
-                ax2.scatter(row['Timestamp'], row['Humidity (%)'], color='blue', marker='o', s=20)
+                ax2.scatter(row['Timestamp'], row['Humidity (%)'], color='blue', marker='o', s=5)
             else:
-                ax2.scatter(row['Timestamp'], row['Humidity (%)'], color='blue', marker='x', s=100)
+                ax2.scatter(row['Timestamp'], row['Humidity (%)'], color='blue', marker='x', s=10)
         
         # Rotate x-ticks for better visibility
         plt.xticks(rotation=45)
@@ -66,7 +67,7 @@ class Plot:
         plt.tight_layout()
         timestamp = datetime.now().strftime('%Y-%m-%d')
         plot_filename = f'{timestamp}_plot.png'
-        plt.savefig(plot_filename, dpi=300)  # Save the plot as an high resolution image
+        plt.savefig(plot_filename, dpi=200)  # Save the plot as an high resolution image
         return plot_filename
     
     def save_data(self, temperature, humidity):

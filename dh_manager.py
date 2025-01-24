@@ -49,7 +49,7 @@ class dh_manager:
             self.control_humidifier(False) #turn off humidifier since the fan will dry the air anyways, waste of water
             return temperature, humidity, self.fan_on, self.humidifier_on
         else:
-            if humidity >= config.get('max_humidity'):
+            if humidity >= config.get('ideal_humidity'):
                 logging.info('Humidity above normal : {}%'.format(humidity))
                 self.control_humidifier(False) # turn off the humidifier
                 

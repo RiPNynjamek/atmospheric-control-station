@@ -39,11 +39,12 @@ def main():
         logging.error(f'An error occured : {err}')
     finally:
         dh.cleanup()  # Always clean up GPIO
-
+        timestamp = datetime.now().strftime('%Y-%m-%d')
         plot_file = plot.generate_plot()
-        uploadFile(plot_file, 'image/png')
         uploadFile('app.logs', 'text/plain')
-        logging.info("Finished testing and cleaned up resources.")
+        uploadFile(f'temperature_humidity_data_{timestamp}.csv', 'text/csv')
+        uploadFile(plot_file, 'image/png')
+        logging.info("Finished running and cleaned up resources.")
 
 def manage(dh, config):
     csv_file = 'temperature_humidity_data.csv'
