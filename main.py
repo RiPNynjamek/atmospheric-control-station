@@ -16,6 +16,7 @@ logging.basicConfig(
 
 def main():
     plot = Plot()
+
     plot.create_csv()
     dh = dh_manager()
     dh.initialize()
@@ -38,11 +39,11 @@ def main():
     except Exception as err:
         logging.error(f'An error occured : {err}')
     finally:
-        dh.cleanup()  # Always clean up GPIO
         timestamp = datetime.now().strftime('%Y-%m-%d')
+        dh.cleanup()  # Always clean up GPIO
         plot_file = plot.generate_plot()
-        uploadFile('app.logs', 'text/plain')
-        uploadFile(f'temperature_humidity_data_{timestamp}.csv', 'text/csv')
+        uploadFile('app.log', 'text/plain')
+        uploadFile('temperature_humidity_data.csv', 'text/csv', f'temperature_humidity_data_{timestamp}.csv')
         uploadFile(plot_file, 'image/png')
         logging.info("Finished running and cleaned up resources.")
 
@@ -63,10 +64,11 @@ def manage(dh, config):
     except Exception as err:
         raise err
 
-def uploadFile(file, mimetype):
+def uploadFile(file, mimetype, remoteFile=None):
+
     drive = Drive()
     service = drive.authenticate()
-    drive.upload(service, file, mimetype)
+    drive.upload(service, file, mimetype, remoteFile)
 
 
 if __name__ == "__main__":

@@ -19,9 +19,9 @@ class Drive:
         # Return the Drive API service instance
         return build('drive', 'v3', credentials=creds)
     
-    def upload(self, service, file_path, mimetype):
+    def upload(self, service, file_path, mimetype, remoteFile=None):
         file_metadata = {
-            'name': file_path.split('/')[-1],
+            'name': remoteFile if remoteFile else file_path.split('/')[-1],
             'parents': ['1D3Z1vI_YIPw5BSb_51wpI5Sk5msk0xs6']
             }
         media = MediaFileUpload(file_path, mimetype=mimetype)
