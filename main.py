@@ -23,7 +23,7 @@ def main():
     dh.initialize()
     config = dh.read_config()
 
-    end_time = datetime.now() + timedelta(minutes=90) # 1h30 test
+    end_time = datetime.now() + timedelta(hours=5) # 1h30 test
     logging.info(f"Program will run until {end_time}")
     try:
         while datetime.now() < end_time:
