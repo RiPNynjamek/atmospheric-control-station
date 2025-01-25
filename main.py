@@ -22,7 +22,7 @@ def main():
     drive = Drive()
     service = drive.authenticate()
 
-    end_time = datetime.now() + timedelta(hours=5) # 1h30 test
+    end_time = datetime.now() + timedelta(hours=3) # 3h test
     logging.info(f"Program will run until {end_time}")
     try:
         while datetime.now() < end_time:
