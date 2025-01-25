@@ -57,7 +57,7 @@ class dh_manager:
         duration_high_temp = 50  # Durée en secondes
         duration_high_humid = 10
 
-        if temperature > self.config.get('max_temperature'):
+        if temperature > self.config.get('max_temperature') or humidity > self.config.get('max_humidity'):
             while temperature is None or temperature > self.config.get('ideal_temperature') or time.time() - start_time < duration_high_temp:
                 logging.info('Temperature above maximum : {}°'.format(temperature))
                 self.control_fan(True)
