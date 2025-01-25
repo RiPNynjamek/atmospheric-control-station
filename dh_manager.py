@@ -59,13 +59,13 @@ class dh_manager:
 
         if temperature > self.config.get('max_temperature') or humidity > self.config.get('max_humidity'):
             while temperature is None or temperature > self.config.get('ideal_temperature') or time.time() - start_time < duration_high_temp:
-                logging.info('Temperature above maximum : {}°'.format(temperature))
+                logging.info('Temperature above ideal : {}°'.format(temperature))
                 self.control_fan(True)
                 time.sleep(2)
                 temperature, humidity = self.get_values()
 
             while humidity is None or humidity > self.config.get('ideal_humidity') or time.time() - start_time < duration_high_humid:
-                logging.info('Humidity above maximum : {}°'.format(humidity))
+                logging.info('Humidity above ideal : {}°'.format(humidity))
                 self.control_fan(True)
                 time.sleep(2)
                 temperature, humidity = self.get_values()

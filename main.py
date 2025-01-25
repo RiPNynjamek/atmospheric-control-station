@@ -19,8 +19,6 @@ def main():
     plot = PlotManager()
     plot.create_csv()
     dh = dh_manager()
-    drive = Drive()
-    service = drive.authenticate()
 
     end_time = datetime.now() + timedelta(hours=3) # 3h test
     logging.info(f"Program will run until {end_time}")
@@ -40,13 +38,10 @@ def main():
         logging.error(f'An error occured : {err}')
     finally:
         time.sleep(2) # hardware limitations: 2s after an error
-        timestamp = datetime.now().strftime('%Y-%m-%d')
         dh.cleanup()  # Always clean up GPIO
-        plot_file = plot.generate_plot()
-        drive.upload(service, 'app.log', 'text/plain')
-        drive.upload(service, 'temperature_humidity_data.csv', 'text/csv', f'temperature_humidity_data_{timestamp}.csv')
-        drive.upload(service, plot_file, 'image/png')
-        logging.info("Finished running and cleaned up resources.")
+
+        upload_files(plot)
+       
 
 def manage(dh):
     csv_file = 'temperature_humidity_data.csv'
@@ -64,6 +59,19 @@ def manage(dh):
 
     except Exception as err:
         raise err
+
+def upload_files(self, plot):
+    plot_file = plot.generate_plot()
+
+    # Files upload
+    drive = Drive()
+    service = drive.authenticate()
+    drive.upload(service, 'app.log', 'text/plain')
+    timestamp = datetime.now().strftime('%Y-%m-%d')
+    drive.upload(service, 'temperature_humidity_data.csv', 'text/csv', f'temperature_humidity_data_{timestamp}.csv')
+    drive.upload(service, plot_file, 'image/png')
+    logging.info("Finished running and cleaned up resources.")
+
 
 if __name__ == "__main__":   
     logging.info('Process starting.')
