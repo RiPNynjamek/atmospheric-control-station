@@ -1,4 +1,4 @@
-from plot import Plot
+from plot_manager import Plot
 
 plot = Plot()
 

@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 import logging
 
-class Plot:
+class PlotManager:
     csv_file = 'temperature_humidity_data.csv'
 
     def create_csv(self):
