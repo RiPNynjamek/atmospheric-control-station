@@ -61,16 +61,18 @@ def manage(dh):
         raise err
 
 def upload_files(self, plot):
-    plot_file = plot.generate_plot()
-
-    # Files upload
-    drive = Drive()
-    service = drive.authenticate()
-    drive.upload(service, 'app.log', 'text/plain')
-    timestamp = datetime.now().strftime('%Y-%m-%d')
-    drive.upload(service, 'temperature_humidity_data.csv', 'text/csv', f'temperature_humidity_data_{timestamp}.csv')
-    drive.upload(service, plot_file, 'image/png')
-    logging.info("Finished running and cleaned up resources.")
+    try:
+        # Files upload
+        drive = Drive()
+        service = drive.authenticate()
+        drive.upload(service, 'app.log', 'text/plain', f'app_{timestamp}.log')
+        timestamp = datetime.now().strftime('%Y-%m-%d')
+        drive.upload(service, 'temperature_humidity_data.csv', 'text/csv', f'temperature_humidity_data_{timestamp}.csv')
+        plot_file = plot.generate_plot()
+        drive.upload(service, plot_file, 'image/png')
+        logging.info("Finished running and cleaned up resources.")
+    except Exception as e:
+        logging.error(f'An error occured while uploading files : {e}')
 
 
 if __name__ == "__main__":   
