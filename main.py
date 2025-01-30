@@ -20,7 +20,7 @@ def main():
     plot.create_csv()
     dh = dh_manager()
 
-    end_time = datetime.now() + timedelta(hours=3) # 3h test
+    end_time = datetime.now() + timedelta(hours=21) # 3h test
     logging.info(f"Program will run until {end_time}")
     try:
         while datetime.now() < end_time:
