@@ -20,7 +20,7 @@ def main():
     plot.create_csv()
     dh = dh_manager()
 
-    end_time = datetime.now() + timedelta(hours=21) # 3h test
+    end_time = datetime.now() + timedelta(hours=24) # 3h test
     logging.info(f"Program will run until {end_time}")
     try:
         while datetime.now() < end_time:
@@ -40,7 +40,7 @@ def main():
         time.sleep(2) # hardware limitations: 2s after an error
         dh.cleanup()  # Always clean up GPIO
 
-        upload_files(plot)
+        upload_files()
        
 
 def manage(dh):
@@ -60,16 +60,23 @@ def manage(dh):
     except Exception as err:
         raise err
 
-def upload_files(self, plot):
+def upload_files():
     try:
+        plot = PlotManager()
+        
+        logging.info('Uploading files...')
         # Files upload
         drive = Drive()
         service = drive.authenticate()
+
         drive.upload(service, 'app.log', 'text/plain', f'app_{timestamp}.log')
+        logging.info('File App.log uploaded')
         timestamp = datetime.now().strftime('%Y-%m-%d')
         drive.upload(service, 'temperature_humidity_data.csv', 'text/csv', f'temperature_humidity_data_{timestamp}.csv')
+        logging.info('Data file uploaded')
         plot_file = plot.generate_plot()
         drive.upload(service, plot_file, 'image/png')
+        logging.info('Plot file uploaded')
         logging.info("Finished running and cleaned up resources.")
     except Exception as e:
         logging.error(f'An error occured while uploading files : {e}')
