@@ -21,9 +21,10 @@ def main():
     dh = dh_manager()
 
     end_time = datetime.now() + timedelta(hours=24) # 3h test
+    last_upload_time = datetime.now()
     logging.info(f"Program will run until {end_time}")
     try:
-        while datetime.now() < end_time:
+        while True: #datetime.now() < end_time:
             try:
                 manage(dh)
             except Exception as err:
@@ -32,6 +33,12 @@ def main():
 
             time.sleep(5) # 5s between 2 readings to let the climate change
 
+            # Vérification si 24 heures se sont écoulées depuis le dernier upload
+            if datetime.now() - last_upload_time >= timedelta(hours=24):
+                logging.info("24h reached, starting file upload.")
+                upload_files()
+                last_upload_time = datetime.now()  # Mise à jour du dernier upload
+                
     except KeyboardInterrupt:
         logging.warning("Program interrupted by user.")
     except Exception as err:
